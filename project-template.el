@@ -90,3 +90,5 @@ occurrences of __variables__ with user-povided values."
   (let ((pt-value-alist))
     (pt-copy-directory
      (concat pt-templates-directory "/" template) destination)))
+
+(provide 'project-template)
