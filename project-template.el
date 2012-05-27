@@ -4,14 +4,19 @@
 (defvar pt-template-var-regexp "__\\([^_ \t\n]+\\)__"
   "Regexp which identifies a variable in a template.")
 
-(defvar pt-value-alist nil)
+(defvar pt-value-alist nil
+  "A placeholder where replacement values will be kept. This is
+  let-bound when `pt-create-project-from-template' is called and
+  should not be edited directly.")
 
 (defun pt-replace-all (from to str)
+  "Simply replace all occurrences of FROM with TO in STR."
   (while (string-match from str)
     (set 'str (replace-match to t t str)))
   str)
 
 (defun pt-get-replacement (key)
+  "Find, or ask for and save, the replacement value for KEY."
   (let ((replacement (assoc key pt-value-alist)))
     (when (eq replacement nil)
       (set 'replacement
@@ -20,6 +25,8 @@
     replacement))
 
 (defun pt-parse-file-name (filename)
+  "Parse FILENAME and replace all __variables__ with values
+provided by the user."
   (while (string-match pt-template-var-regexp filename)
     (let* ((tpl-var (match-string 1 filename))
            (replacement-value (pt-get-replacement tpl-var)))
@@ -32,6 +39,8 @@
     (concat noext ext)))
 
 (defun pt-parse-file (file)
+  "Parse FILE and replace all __variables__ with values provided by
+the user."
   (insert-file-contents file)
 
   (while (re-search-forward pt-template-var-regexp nil t)
@@ -40,6 +49,8 @@
       (replace-match (cdr replacement-value) t t))))
 
 (defun pt-parse-and-copy-file (src dst)
+  "Copy SRC to DST, but, if necessary, parse the file and filename
+first."
   (let* ((parsed-dst (pt-parse-file-name dst))
          (parsed-dst-dir (file-name-directory parsed-dst)))
     (when (not (file-exists-p parsed-dst-dir))
@@ -49,6 +60,8 @@
         (pt-parse-file src))))
 
 (defun pt-copy-directory (directory to)
+  "Copy template directory DIRECTORY to the location indicated by
+TO and parse both paths and files in the process."
   (let ((files (directory-files directory t "[^.]\\{1,2\\}$" t)))
     (while files
       (let* ((src-filename (car files))
@@ -71,6 +84,8 @@
 
 ;;;###autoload
 (defun pt-create-project-from-template (template destination)
+  "Take TEMPLATE, copy it to DESTINATION and replace any
+occurrences of __variables__ with user-povided values."
   (interactive "MTemplate: \nGDestination: ")
   (let ((pt-value-alist))
     (pt-copy-directory
