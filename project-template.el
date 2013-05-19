@@ -1,3 +1,36 @@
+;;; project-template --- Generate dircetory structures from templates
+
+;; Copyright (C) 2013  Tom Willemse
+
+;; Author: Tom Willemse <tom@ryuslash.org>
+;; Keywords: convenience
+;; Package-Version: 0.1.0
+
+;; This file is part of project-template.
+
+;; project-template is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation, either version 3 of the
+;; License, or (at your option) any later version.
+
+;; project-template is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with project-template.
+;; If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; This project helps you recreate directory structures from template
+;; directory structures.  The files, file names and directory names of
+;; these templates contain variable placeholders, which will be
+;; replaced by whatever value you wish to use when copied.
+
+;;; Code:
+
 (defvar pt-templates-directory "~/.emacs.d/templates"
   "Where templates are stored.")
 
@@ -98,3 +131,4 @@ occurrences of __variables__ with user-povided values."
      (concat pt-templates-directory "/" template) destination)))
 
 (provide 'project-template)
+;;; project-template.el ends here
