@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ "${#@}" -lt 2 ]; then
+    echo "Usage: $0 <template name> <destination>"
+    exit 1
+fi
+
+/usr/bin/emacs -Q -batch -l project-template.el -eval \
+    "(pt-create-project-from-template \"$1\" \"$2\")"
