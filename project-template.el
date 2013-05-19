@@ -1,8 +1,14 @@
 (defvar pt-templates-directory "~/.emacs.d/templates"
   "Where templates are stored.")
 
-(defvar pt-template-var-regexp "__\\([^_ \t\n]+\\)__"
-  "Regexp which identifies a variable in a template.")
+(defvar pt-template-var-delimiter "$!"
+  "Strings used to delimit variable names.")
+
+(defun pt-template-var-regexp ()
+  "Create the regexp which identifies a variable in a template."
+  (concat pt-template-var-delimiter
+          "\\([^" pt-template-var-delimiter " \t\n]+\\)"
+          pt-template-var-delimiter))
 
 (defvar pt-value-alist nil
   "A placeholder where replacement values will be kept. This is
@@ -27,7 +33,7 @@
 (defun pt-parse-file-name (filename)
   "Parse FILENAME and replace all __variables__ with values
 provided by the user."
-  (while (string-match pt-template-var-regexp filename)
+  (while (string-match (pt-template-var-regexp) filename)
     (let* ((tpl-var (match-string 1 filename))
            (replacement-value (pt-get-replacement tpl-var)))
       (set 'filename (replace-match (cdr replacement-value) t t
@@ -43,7 +49,7 @@ provided by the user."
 the user."
   (insert-file-contents file)
 
-  (while (re-search-forward pt-template-var-regexp nil t)
+  (while (re-search-forward (pt-template-var-regexp) nil t)
     (let* ((tpl-var (match-string 1))
            (replacement-value (pt-get-replacement tpl-var)))
       (replace-match (cdr replacement-value) t t))))
