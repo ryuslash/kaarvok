@@ -1,0 +1,5 @@
+#+STARTUP: showall
+
+* Kaarvok
+
+  : I doubled you. I twinned you. Equal and original. And tasty.
