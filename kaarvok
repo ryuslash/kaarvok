@@ -22,5 +22,5 @@ if [ "${#@}" -lt 2 ]; then
     exit 1
 fi
 
-/usr/bin/emacs -Q -batch -l kaarvok.el -eval \
+/usr/bin/emacs -Q -batch -L $(dirname $0) -l kaarvok.el -eval \
     "(kaarvok-create-project-from-template \"$1\" \"$2\")"
