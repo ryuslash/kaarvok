@@ -133,7 +133,8 @@ Replace any occurrences of variables with user-povided values."
   (interactive "MTemplate: \nGDestination: ")
   (let ((kaarvok-value-alist))
     (kaarvok-copy-directory
-     (concat kaarvok-templates-directory "/" template) destination)))
+     (concat kaarvok-templates-directory "/" template)
+     (expand-file-name destination))))
 
 (provide 'kaarvok)
 ;;; kaarvok.el ends here
