@@ -113,14 +113,16 @@ Parse both paths and files in the process."
           (if (string-equal (file-name-extension src-filename) "etpl")
               (kaarvok-parse-and-copy-file
                src-filename (file-name-sans-extension dst-filename))
-            (if (not (file-exists-p to))
-                (make-directory to t)
-              (unless (file-directory-p to)
-                (error
-                 (concat "Cannot create project at %s, file "
-                         "already exists and is not a directory.") to)))
+            (let ((to (kaarvok-parse-file-name to)))
+              (if (not (file-exists-p to))
+                  (make-directory to t)
+                (unless (file-directory-p to)
+                  (error
+                   (concat "Cannot create project at %s, file "
+                           "already exists and is not a directory.") to))))
 
-            (copy-file src-filename dst-filename))))
+            (copy-file src-filename
+                       (kaarvok-parse-file-name dst-filename)))))
       (set 'files (cdr files)))))
 
 ;;;###autoload
