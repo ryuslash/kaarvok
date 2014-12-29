@@ -3,3 +3,70 @@
 * Kaarvok
 
   : I doubled you. I twinned you. Equal and original. And tasty.
+
+** Introduction
+
+   Kaarvok is a directory template system. It allows you to create
+   templates of directories which will be filled-in by variables you
+   describe. Variable names can appear both in files and file or
+   directory names.
+
+** Creating templates
+
+   Templates can be created by putting the desired directories and
+   files in the =kaarvok-templates-directory= (by default
+   "~/.emacs.d/templates"). Files ending in =.etpl= will be looked
+   through for possible substitutions, other files are copied
+   directly. File and directory names can just be or contain variables
+   and will be expanded.
+
+   Variables are delimited by the =kaarvok-template-var-delimiter= (by
+   default "$!").
+
+** Using templates
+
+   Once a proper template has been made it can be used. Every file and
+   directory in the template is iterated over and each file's and
+   directory's name is looked over to check for variables. Any file
+   ending in =.etpl= is also looked through for variables. Any other
+   file is just copied to the destination.
+
+   The value for each variable is requested as it is encountered.
+   After you give a value it is stored under the variable's name and
+   used again at later occurrences. These values are stored in the
+   =kaarvok-value-alist=, as such you could fill this variable with some
+   values to (semi-)automate the template to directory process.
+
+   The dot (=.=) in a variable's value is replaced by a slash (=/=) when
+   put in a file or directory name. This causes, for example
+   =oni.project.module= to turn into the directory structure
+   =oni/project/module=. This was done to help with the creation of Java
+   projects, where modules separated by dots appear as a directory
+   hierarchy on the file-system with the same names.
+
+** Invoking kaarvok
+
+   This project is primarily an Emacs module, but because one of my
+   friends dislikes Emacs I also made a shell script which works
+   mostly the same way.
+
+*** The Emacs way
+
+    The main entry point from within Emacs is the
+    =kaarvok-create-project-from-template= command. When called it will
+    ask you which template you would like to use and where you would
+    like to send it to. Any variables that have unknown values will be
+    asked for whenever they're found.
+
+*** The Shell way
+
+    Using the shell script you need to specify the template name and
+    destination on the command-line. This will call Emacs in batch
+    mode and will also request a value for each variable as they are
+    found.
+
+** License
+
+   This project is licensed under the terms of the GNU General Public
+   License version 3 or (at your option) any later version. You can
+   read the terms of this license [[file:COPYING][here]].
