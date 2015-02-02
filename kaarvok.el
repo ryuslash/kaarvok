@@ -69,14 +69,11 @@ called and should not be edited directly.")
 Use values provided by the user."
   (while (string-match (kaarvok-template-var-regexp) filename)
     (let* ((tpl-var (match-string 1 filename))
-           (replacement-value (kaarvok-get-replacement tpl-var)))
-      (set 'filename (replace-match (cdr replacement-value) t t
-                                    filename))))
-
-  (let ((noext (file-name-sans-extension filename))
-        (ext (file-name-extension filename t)))
-    (set 'noext (kaarvok-replace-all "\\." "/" noext))
-    (concat noext ext)))
+           (replacement-value
+            (kaarvok-replace-all
+             "\\." "/" (cdr (kaarvok-get-replacement tpl-var)))))
+      (set 'filename (replace-match replacement-value t t filename))))
+  filename)
 
 (defun kaarvok-parse-file (file)
   "Parse FILE and replace all variables."
